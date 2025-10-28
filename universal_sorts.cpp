@@ -10,21 +10,45 @@ using namespace std;
 // (каждый участник команды должен реализовать свою функцию)
 
 // Сортировка вставками (фамилия)
-template<typename T>
-void insertion_sort_familyname(vector<T>& aVector);
+//template<typename T>
+//void insertion_sort_familyname(vector<T>& aVector);
 
 // Сортировка Шелла (фамилия)
 template<typename T>
-// пример: void aboyan_shell(vector<T>& aVector);
+void aboyan_shell(vector<T>& aVector);
 
 // Быстрая сортировка (фамилия)
-template<typename T>
-void quicksort_familyname(vector<T>& arr);
+//template<typename T>
+//void quicksort_familyname(vector<T>& arr);
 
 
 // Сортировка слиянием (фамилия)
+//template<typename T>
+//void mergesort_familyname(vector<T>& arr);
+
+
+// РЕАЛИЗАЦИЯ ФУНКЦИИ СОРТИРОВКИ ШЕЛЛА АБОЯН
 template<typename T>
-void mergesort_familyname(vector<T>& arr);
+void aboyan_shell(vector<T>& aVector) {
+    int n = aVector.size();
+
+    // Последовательность gaps - начинаем с n/2 и делим на 2 каждую итерацию
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        // Выполняем сортировку вставками для этого gap
+        for (int i = gap; i < n; i++) {
+            T temp = aVector[i];
+            int j;
+
+            // Сдвигаем элементы, пока не найдем правильную позицию для aVector[i]
+            for (j = i; j >= gap && aVector[j - gap] > temp; j -= gap) {
+                aVector[j] = aVector[j - gap];
+            }
+
+            // Вставляем элемент на правильную позицию
+            aVector[j] = temp;
+        }
+    }
+}
 
 
 // Вспомогательные функции 
@@ -76,10 +100,10 @@ int main() {
     // Алгоритмы сортировки
     vector<pair<string, void (*)(vector<string>&)>> algorithms = {
         //пример: {"MergeSort (фамилия)", mergeSort_byKaneva<string>}
-        {"InsertionSort (фамилия)", },
-        {"QuickSort (фамилия)", },
-        {"ShellSort (фамилия)", },
-        {"MergeSort (фамилия)", }
+        //{"InsertionSort (фамилия)", },
+        //{"QuickSort (фамилия)", },
+        {"ShellSort (Абоян)", aboyan_shell<string>},
+        //{"MergeSort (фамилия)", }
     };
 
     // Тестирование каждого файла
