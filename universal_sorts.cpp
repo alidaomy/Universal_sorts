@@ -22,9 +22,9 @@ void aboyan_shell(vector<T>& aVector);
 //void quicksort_familyname(vector<T>& arr);
 
 
-// Сортировка слиянием (фамилия)
-//template<typename T>
-//void mergesort_familyname(vector<T>& arr);
+// Сортировка слиянием (Канева)
+template<typename T>
+void kaneva_merge(vector<T>& arr);
 
 
 // РЕАЛИЗАЦИЯ ФУНКЦИИ СОРТИРОВКИ ШЕЛЛА АБОЯН
@@ -48,6 +48,59 @@ void aboyan_shell(vector<T>& aVector) {
             aVector[j] = temp;
         }
     }
+}
+
+// РЕАЛИЗАЦИЯ ФУНКЦИИ СОРТИРОВКИ СЛИЯНИЕМ КАНЕВА
+template<typename T>
+void mergesort_kaneva(vector<T>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    vector<T> L(n1), R(n2);
+    
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+        
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+template<typename T>
+void merge_kaneva(vector<T>& arr, int left, int right) {
+    if (left >= right) return;
+    
+    int mid = left + (right - left) / 2;
+    merge_kaneva(arr, left, mid);
+    merge_kaneva(arr, mid + 1, right);
+    mergesort_kaneva(arr, left, mid, right);
+}
+
+template<typename T>
+void kaneva_merge(vector<T>& arr) {
+    if (arr.size() <= 1) return;
+    merge_kaneva(arr, 0, arr.size() - 1);
 }
 
 
@@ -103,7 +156,7 @@ int main() {
         //{"InsertionSort (фамилия)", },
         //{"QuickSort (фамилия)", },
         {"ShellSort (Абоян)", aboyan_shell<string>},
-        //{"MergeSort (фамилия)", }
+        {"MergeSort (Канева)", kaneva_merge<string>}
     };
 
     // Тестирование каждого файла
@@ -141,4 +194,5 @@ int main() {
     }
 
     return 0;
+
 }
